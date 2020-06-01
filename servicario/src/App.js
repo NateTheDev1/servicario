@@ -14,6 +14,7 @@ import Login from "./pages/Login";
 
 import { Provider } from "react-redux";
 import initStore from "./store/index";
+import ServiceDetail from "pages/ServiceDetail";
 
 const store = initStore();
 
@@ -30,6 +31,9 @@ function App() {
           </Route>
           <Route path="/login">
             <Login />
+          </Route>
+          <Route path="/services/:serviceId">
+            <ServiceDetail />
           </Route>
           <Route path="/services">
             <Services />
