@@ -1,3 +1,20 @@
+import { createStore, combineReducers } from "redux";
+
+const initStore = () => {
+  const serviceApp = combineReducers({
+    service: () => ({ testingData: "Hello World", testingNumber: 10 }),
+  });
+
+  const browserSupport =
+    window.__REDUX_DEVTOOLS_EXTENSION__ &&
+    window.__REDUX_DEVTOOLS_EXTENSION__();
+
+  const store = createStore(serviceApp, browserSupport);
+  return store;
+};
+
+export default initStore;
+
 const services = [
   {
     id: "2asd8sa7d98",

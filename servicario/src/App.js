@@ -12,9 +12,14 @@ import Navbar from "./components/Navbar";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 
+import { Provider } from "react-redux";
+import initStore from "./store/index";
+
+const store = initStore();
+
 function App() {
   return (
-    <div>
+    <Provider store={store}>
       <Router>
         <Navbar />
         <Navbar id="navbar-clone" />
@@ -40,7 +45,7 @@ function App() {
           </Route>
         </Switch>
       </Router>
-    </div>
+    </Provider>
   );
 }
 
