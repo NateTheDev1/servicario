@@ -1,18 +1,15 @@
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 
 import React from "react";
-import { getServices } from "../store/index";
 import ServiceItem from "../components/service/ServiceItem";
 import Hero from "../components/Hero";
+import { connect } from "react-redux";
+
+import { fetchServices } from "../actions/index";
 
 class Home extends React.Component {
-  state = {
-    services: [],
-  };
-
   componentDidMount() {
-    const services = getServices();
-    this.setState({ services });
+    this.props.dispatch(fetchServices());
   }
 
   renderServices = (services) => {
@@ -20,7 +17,8 @@ class Home extends React.Component {
   };
 
   render() {
-    const { services } = this.state;
+    const { services } = this.props;
+
     return (
       <div>
         <Hero />
@@ -44,4 +42,10 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+const mapStateToProps = (state) => {
+  return {
+    services: state.service.items,
+  };
+};
+
+export default connect(mapStateToProps)(Home);
