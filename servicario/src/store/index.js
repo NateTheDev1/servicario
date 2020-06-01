@@ -2,31 +2,42 @@ import { createStore, combineReducers } from "redux";
 import servicesReducer from "../reducers/index";
 
 const addLoggerToDispatch = (store) => {
-  const dispatch = store.dispatch;
-
-  return (action) => {
-    console.group(action.type);
-    console.log("%c prev state", "color: gray", store.getState());
-    console.log("%c action", "color: blue", action);
-    const returnValue = dispatch(action);
-    console.log("%c next state", "color: green", store.getState());
-    console.groupEnd(action.type);
-    return returnValue;
+  return (dispatch) => {
+    return (action) => {
+      console.group(action.type);
+      console.log("%c prev state", "color: gray", store.getState());
+      console.log("%c action", "color: blue", action);
+      const returnValue = dispatch(action);
+      console.log("%c next state", "color: green", store.getState());
+      console.groupEnd(action.type);
+      return returnValue;
+    };
   };
 };
 
 const addPromiseToDispatch = (store) => {
-  const dispatch = store.dispatch;
-
-  return (action) => {
-    if (typeof action.then === "function") {
-      return action.then(dispatch);
-    }
-    return dispatch(action);
+  return (dispatch) => {
+    return (action) => {
+      if (typeof action.then === "function") {
+        return action.then(dispatch);
+      }
+      return dispatch(action);
+    };
   };
 };
 
+const applyMiddlewares = (store, middlewares) => {
+  middlewares
+    .slice()
+    .reverse()
+    .forEach((middleware) => {
+      store.dispatch = middleware(store)(store.dispatch);
+    });
+};
+
 const initStore = () => {
+  const middlewares = [addPromiseToDispatch];
+
   const serviceApp = combineReducers({
     service: servicesReducer,
   });
@@ -38,9 +49,9 @@ const initStore = () => {
   const store = createStore(serviceApp, browserSupport);
 
   if (process.env.NODE_ENV !== "production") {
-    store.dispatch = addLoggerToDispatch(store);
+    middlewares.push(addLoggerToDispatch);
   }
-  store.dispatch = addPromiseToDispatch(store);
+  applyMiddlewares(store, middlewares);
 
   return store;
 };
