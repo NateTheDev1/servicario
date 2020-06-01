@@ -44,7 +44,7 @@ class Home extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    services: state.services.items,
+    services: state.services.all,
   };
 };
 
