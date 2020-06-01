@@ -1,8 +1,6 @@
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 
 import React from "react";
-import Navbar from "../components/Navbar";
-import NavbarClone from "../components/NavbarClone";
 import { getServices } from "../store/index";
 import ServiceItem from "../components/service/ServiceItem";
 import Hero from "../components/Hero";
@@ -25,8 +23,6 @@ class Home extends React.Component {
     const { services } = this.state;
     return (
       <div>
-        <Navbar />
-        <NavbarClone />
         <Hero />
         <section className="section section-feature-grey is-medium">
           <div className="container">
