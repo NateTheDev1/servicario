@@ -1,59 +1,38 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { ToastProvider } from "react-toast-notifications";
 
-import HomePage from "./pages/Home";
-import Sidebar from "./components/Sidebar";
-import Services from "./pages/Services";
-import Profile from "./pages/Profile";
-import Faq from "./pages/Faq";
-
-import Navbar from "./components/Navbar";
-
-import Register from "./pages/Register";
-import Login from "./pages/Login";
-
 import initStore from "./store/index";
-import ServiceDetail from "pages/ServiceDetail";
+import ServiceApp from "ServiceApp";
+
+import { onAuthStateChanged, storeAuthUser } from "./actions/index";
 
 const store = initStore();
 
-function App() {
-  return (
-    <Provider store={store}>
-      <ToastProvider>
-        <Router>
-          <Navbar />
-          <Navbar id="navbar-clone" />
-          <Sidebar />
-          <Switch>
-            <Route path="/register">
-              <Register />
-            </Route>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/services/:serviceId">
-              <ServiceDetail />
-            </Route>
-            <Route path="/services">
-              <Services />
-            </Route>
-            <Route path="/profile">
-              <Profile />
-            </Route>
-            <Route path="/faq">
-              <Faq />
-            </Route>
-            <Route path="/">
-              <HomePage />
-            </Route>
-          </Switch>
-        </Router>
-      </ToastProvider>
-    </Provider>
-  );
+class App extends React.Component {
+  componentDidMount() {
+    this.unsubscribeAuth = onAuthStateChanged((authUser) => {
+      console.log(authUser);
+      store.dispatch(storeAuthUser(authUser));
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeAuth();
+  }
+
+  render() {
+    return (
+      <Provider store={store}>
+        <ToastProvider>
+          <Router>
+            <ServiceApp />
+          </Router>
+        </ToastProvider>
+      </Provider>
+    );
+  }
 }
 
 export default App;

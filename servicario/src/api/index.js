@@ -64,3 +64,13 @@ export const login = ({ email, password }) => {
     .signInWithEmailAndPassword(email, password)
     .catch((error) => Promise.reject(error.message));
 };
+
+export const onAuthStateChanged = (onAuthCallback) =>
+  firebase.auth().onAuthStateChanged(onAuthCallback);
+
+export const getUserProfile = (uid) => {
+  db.collection("profiles")
+    .doc(uid)
+    .get()
+    .then((snapshot) => ({ uid, ...snapshot.data() }));
+};

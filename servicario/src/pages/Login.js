@@ -24,9 +24,9 @@ const Login = () => {
     );
   };
 
-  if (redirect) {
-    return <Redirect to="/" />;
-  }
+  // if (redirect) {
+  //   return <Redirect to="/" />;
+  // }
 
   return (
     <div className="auth-page">

@@ -38,3 +38,18 @@ export const register = (registerFormData) => {
 export const login = (loginData) => {
   return api.login({ ...loginData });
 };
+
+export const onAuthStateChanged = (onAuthCallback) =>
+  api.onAuthStateChanged(onAuthCallback);
+
+export const storeAuthUser = (authUser) => (dispatch) => {
+  debugger;
+  if (authUser) {
+    return api.getUserProfile(authUser.uid).then((userWithProfile) => {
+      debugger;
+      return userWithProfile;
+    });
+  } else {
+    return;
+  }
+};
