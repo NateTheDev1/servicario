@@ -6,6 +6,8 @@ import { login } from "../actions/index";
 import { useToasts } from "react-toast-notifications";
 import { Redirect } from "react-router-dom";
 
+import onlyGuest from "../components/hoc/onlyGuest";
+
 const Login = () => {
   const [redirect, setRedirect] = useState(false);
   const { register, handleSubmit } = useForm();
@@ -24,9 +26,9 @@ const Login = () => {
     );
   };
 
-  // if (redirect) {
-  //   return <Redirect to="/" />;
-  // }
+  if (redirect) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div className="auth-page">
@@ -82,4 +84,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default onlyGuest(Login);

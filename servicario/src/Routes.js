@@ -8,9 +8,13 @@ import Faq from "./pages/Faq";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import ServiceDetail from "pages/ServiceDetail";
+import Secret from "pages/Secret";
 
 const Routes = () => (
   <Switch>
+    <Route path="/secret">
+      <Secret />
+    </Route>
     <Route path="/register">
       <Register />
     </Route>

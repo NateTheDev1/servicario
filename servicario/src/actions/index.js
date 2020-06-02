@@ -3,6 +3,7 @@ import {
   FETCH_SERVICE_SUCCESS,
   REQUEST_SERVICE,
   SET_AUTH_USER,
+  RESET_AUTH_STATE,
 } from "../types/index";
 
 import * as api from "../api/index";
@@ -57,3 +58,5 @@ export const storeAuthUser = (authUser) => (dispatch) => {
 
 export const logout = () => (dispatch) =>
   api.logout().then((_) => dispatch({ payload: null, type: SET_AUTH_USER }));
+
+export const resetAuthState = () => ({ type: RESET_AUTH_STATE });

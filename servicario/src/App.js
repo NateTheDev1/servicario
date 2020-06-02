@@ -6,13 +6,18 @@ import { ToastProvider } from "react-toast-notifications";
 import initStore from "./store/index";
 import ServiceApp from "ServiceApp";
 
-import { onAuthStateChanged, storeAuthUser } from "./actions/index";
+import {
+  onAuthStateChanged,
+  storeAuthUser,
+  resetAuthState,
+} from "./actions/index";
 
 const store = initStore();
 
 class App extends React.Component {
   componentDidMount() {
     this.unsubscribeAuth = onAuthStateChanged((authUser) => {
+      store.dispatch(resetAuthState());
       store.dispatch(storeAuthUser(authUser));
     });
   }

@@ -1,11 +1,22 @@
 /* eslint jsx-a11y/anchor-is-valid: 0 */
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const Navbar = (props) => {
   const { user, isAuth } = props.auth;
-  const { logout } = props;
+  const { logout, loadFresh } = props;
+
+  useEffect(() => {
+    if (!loadFresh) {
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = `${process.env.PUBLIC_URL}/js/fresh.js`;
+    script.async = true;
+    document.body.appendChild(script);
+  }, [loadFresh]);
+
   return (
     <nav
       className="navbar is-fresh is-transparent no-shadow"

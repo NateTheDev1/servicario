@@ -1,4 +1,4 @@
-import { SET_AUTH_USER } from "../types/index";
+import { SET_AUTH_USER, RESET_AUTH_STATE } from "../types/index";
 
 const INITIAL_STATE = {
   user: null,
@@ -13,6 +13,11 @@ const auth = (state = INITIAL_STATE, action) => {
         user: action.payload,
         isAuthResolved: true,
         isAuth: !!action.payload,
+      };
+    case RESET_AUTH_STATE:
+      return {
+        ...state,
+        isAuthResolved: false,
       };
     default:
       return state;

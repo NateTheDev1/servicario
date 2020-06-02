@@ -9,6 +9,8 @@ import { register } from "../actions/index";
 
 // import { withRouter } from "react-router-dom";
 
+import onlyGuest from "../components/hoc/onlyGuest";
+
 const Register = (props) => {
   const [redirect, setRedirect] = useState(false);
 
@@ -56,4 +58,4 @@ const Register = (props) => {
   );
 };
 
-export default Register;
+export default onlyGuest(Register);
