@@ -8,7 +8,7 @@ import Spinner from "components/Spinner";
 import { logout } from "./actions/index";
 
 class ServiceApp extends React.Component {
-  handleLogout = () => this.props.dispatch(logout());
+  handleLogout = () => this.props.logout();
 
   renderApplication = (auth) => {
     return (
@@ -38,4 +38,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(ServiceApp);
+export default connect(mapStateToProps, { logout })(ServiceApp);

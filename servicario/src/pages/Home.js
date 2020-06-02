@@ -9,7 +9,7 @@ import { fetchServices } from "../actions/index";
 
 class Home extends React.Component {
   componentDidMount() {
-    this.props.dispatch(fetchServices());
+    this.props.fetchServices();
   }
 
   renderServices = (services) => {
@@ -33,7 +33,9 @@ class Home extends React.Component {
             </div>
 
             <div className="content-wrapper">
-              <div className="columns">{this.renderServices(services)}</div>
+              <div className="columns is-multiline">
+                {this.renderServices(services)}
+              </div>
             </div>
           </div>
         </section>
@@ -48,4 +50,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps, { fetchServices })(Home);

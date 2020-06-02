@@ -2,7 +2,9 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchServiceById } from "../actions/index";
+
 import Spinner from "components/Spinner";
+import Modal from "components/Modal";
 
 const ServiceDetail = (props) => {
   const { serviceId } = useParams();
@@ -37,9 +39,7 @@ const ServiceDetail = (props) => {
               <h2 className="subtitle is-4">{service.description}</h2>
               <br />
               <p className="has-text-centered">
-                <button className="button is-medium is-info is-outlined">
-                  Learn more
-                </button>
+                <Modal openButtonText="Make an offer" />
               </p>
             </div>
           </div>
