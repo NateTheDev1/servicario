@@ -13,7 +13,6 @@ const store = initStore();
 class App extends React.Component {
   componentDidMount() {
     this.unsubscribeAuth = onAuthStateChanged((authUser) => {
-      console.log(authUser);
       store.dispatch(storeAuthUser(authUser));
     });
   }

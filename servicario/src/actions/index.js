@@ -2,6 +2,7 @@ import {
   FETCH_SERVICES_SUCCESS,
   FETCH_SERVICE_SUCCESS,
   REQUEST_SERVICE,
+  SET_AUTH_USER,
 } from "../types/index";
 
 import * as api from "../api/index";
@@ -43,13 +44,16 @@ export const onAuthStateChanged = (onAuthCallback) =>
   api.onAuthStateChanged(onAuthCallback);
 
 export const storeAuthUser = (authUser) => (dispatch) => {
-  debugger;
   if (authUser) {
-    return api.getUserProfile(authUser.uid).then((userWithProfile) => {
-      debugger;
-      return userWithProfile;
-    });
+    return api
+      .getUserProfile(authUser.uid)
+      .then((userWithProfile) =>
+        dispatch({ payload: userWithProfile, type: SET_AUTH_USER })
+      );
   } else {
-    return;
+    dispatch({ payload: null, type: SET_AUTH_USER });
   }
 };
+
+export const logout = () => (dispatch) =>
+  api.logout().then((_) => dispatch({ payload: null, type: SET_AUTH_USER }));

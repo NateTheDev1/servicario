@@ -4,6 +4,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Navbar = (props) => {
+  const { user, isAuth } = props.auth;
+  const { logout } = props;
   return (
     <nav
       className="navbar is-fresh is-transparent no-shadow"
@@ -82,6 +84,11 @@ const Navbar = (props) => {
           </div>
 
           <div className="navbar-end">
+            {user && (
+              <div className="navbar-item is-secondary user-welcome">
+                {`Hi ${user.fullName}`}
+              </div>
+            )}
             <Link to="/" className="navbar-item is-secondary">
               Home
             </Link>
@@ -100,18 +107,29 @@ const Navbar = (props) => {
                 <a className="navbar-item">Dropdown item</a>
               </div>
             </div>
-            <Link
-              to="/login"
-              className="navbar-item is-secondary modal-trigger"
-              data-modal="auth-modal"
-            >
-              Log in
-            </Link>
-            <Link to="/register" className="navbar-item">
-              <span className="button signup-button rounded secondary-btn raised">
-                Sign up
-              </span>
-            </Link>
+            {!isAuth && (
+              <React.Fragment>
+                <Link
+                  to="/login"
+                  className="navbar-item is-secondary modal-trigger"
+                  data-modal="auth-modal"
+                >
+                  Log in
+                </Link>
+                <Link to="/register" className="navbar-item">
+                  <span className="button signup-button rounded secondary-btn raised">
+                    Register
+                  </span>
+                </Link>
+              </React.Fragment>
+            )}
+            {isAuth && (
+              <div onClick={logout} className="navbar-item">
+                <span className="button signup-button is-danger rounded raised">
+                  Logout
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>
