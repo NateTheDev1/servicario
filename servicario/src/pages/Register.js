@@ -1,20 +1,37 @@
 /* eslint jsx-a11y/anchor-is-valid: 0 */
-import React from "react";
+import React, { useState } from "react";
 import RegisterForm from "components/auth/RegisterForm";
+import { useToasts } from "react-toast-notifications";
+
+import { Redirect } from "react-router-dom";
 
 import { register } from "../actions/index";
 
+// import { withRouter } from "react-router-dom";
+
 const Register = (props) => {
+  const [redirect, setRedirect] = useState(false);
+
+  const { addToast } = useToasts();
+
   const registerUser = (userData) => {
     register(userData).then(
       (_) => {
-        debugger;
+        setRedirect(true);
       },
       (errorMessage) => {
-        debugger;
+        addToast(errorMessage, {
+          appearance: "error",
+          autoDismiss: true,
+          autoDismissTimeout: 3000,
+        });
       }
     );
   };
+
+  if (redirect) {
+    return <Redirect to="/login" />;
+  }
 
   return (
     <div className="auth-page">

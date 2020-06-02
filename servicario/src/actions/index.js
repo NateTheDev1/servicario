@@ -32,5 +32,5 @@ export const fetchServiceById = (serviceId) => (dispatch, getState) => {
 };
 
 export const register = (registerFormData) => {
-  api.register({ ...registerFormData });
+  return api.register({ ...registerFormData });
 };
