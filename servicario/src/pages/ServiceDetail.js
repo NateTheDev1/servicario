@@ -5,6 +5,7 @@ import { fetchServiceById } from "../actions/index";
 
 import Spinner from "components/Spinner";
 import Modal from "components/Modal";
+import OfferModal from "components/service/OfferModal";
 
 const ServiceDetail = (props) => {
   const { serviceId } = useParams();
@@ -38,9 +39,9 @@ const ServiceDetail = (props) => {
               <h1 className="title is-2">{service.title}</h1>
               <h2 className="subtitle is-4">{service.description}</h2>
               <br />
-              <p className="has-text-centered">
-                <Modal openButtonText="Make an offer" />
-              </p>
+              <div className="has-text-centered">
+                <OfferModal service={service} />
+              </div>
             </div>
           </div>
         </div>
