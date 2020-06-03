@@ -10,7 +10,7 @@ class UserServices extends React.Component {
       auth: { user },
       dispatch,
     } = this.props;
-
+    debugger;
     dispatch(fetchUserServices(user.uid));
   }
 
