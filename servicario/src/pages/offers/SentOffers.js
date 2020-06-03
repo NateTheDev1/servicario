@@ -1,14 +1,33 @@
 import React from "react";
 import withAuthorization from "../../components/hoc/withAuthorization";
 import ServiceItem from "../../components/service/ServiceItem";
-import { fetchSentOffers } from "actions";
+import { fetchSentOffers, collaborate } from "actions";
 import { connect } from "react-redux";
+import { createMessage, createCollaboration } from "../../helpers/offers";
+import { withToastManager } from "react-toast-notifications";
 
 class SentOffers extends React.Component {
   componentDidMount() {
     const { auth } = this.props;
     this.props.dispatch(fetchSentOffers(auth.user.uid));
   }
+
+  createCollaboration = (offer) => {
+    const {
+      auth: { user },
+      toastManager,
+    } = this.props;
+
+    const collaboration = createCollaboration({ offer, fromUser: user });
+    const message = createMessage({ offer, fromUser: user });
+
+    this.props.collaborate({ collaboration, message }).then((_) =>
+      toastManager.add("Collaboration Created Successfully!", {
+        appearance: "success",
+        autoDismiss: true,
+      })
+    );
+  };
 
   render() {
     const { offers } = this.props;
@@ -41,6 +60,17 @@ class SentOffers extends React.Component {
                       <span className="label">Time:</span> {o.time} hours
                     </div>
                   </div>
+                  {o.status === "accepted" && !o.collaborationCreated && (
+                    <div>
+                      <hr />
+                      <button
+                        className="button is-success"
+                        onClick={() => this.createCollaboration(o)}
+                      >
+                        Collaborate
+                      </button>
+                    </div>
+                  )}
                 </ServiceItem>
               </div>
             ))}
@@ -53,4 +83,8 @@ class SentOffers extends React.Component {
 
 const mapStateToProps = (state) => ({ offers: state.offers.sent });
 
-export default withAuthorization(connect(mapStateToProps)(SentOffers));
+const SentOffersWithToast = withToastManager(SentOffers);
+
+export default withAuthorization(
+  connect(mapStateToProps, { collaborate })(SentOffersWithToast)
+);

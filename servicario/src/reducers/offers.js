@@ -1,5 +1,9 @@
 import { combineReducers } from "redux";
-import { CHANGE_OFFER_STATUS, FETCH_OFFERS_SUCCESS } from "types";
+import {
+  CHANGE_OFFER_STATUS,
+  FETCH_OFFERS_SUCCESS,
+  COLLABORATION_CREATED_FROM_OFFER,
+} from "types";
 
 const createOfferList = (offersType) => {
   return (state = [], action) => {
@@ -15,6 +19,12 @@ const createOfferList = (offersType) => {
         const offerIndex = nextState.findIndex((o) => o.id === action.payload);
         nextState[offerIndex].status = action.status;
         return nextState;
+      case COLLABORATION_CREATED_FROM_OFFER: {
+        const nextState = [...state];
+        const offerIndex = nextState.findIndex((o) => o.id === action.payload);
+        nextState[offerIndex].collaborationCreated = true;
+        return nextState;
+      }
       default:
         return state;
     }
