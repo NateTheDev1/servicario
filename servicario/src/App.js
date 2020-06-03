@@ -10,6 +10,7 @@ import {
   onAuthStateChanged,
   storeAuthUser,
   resetAuthState,
+  subscribeToMessages,
 } from "./actions/index";
 
 const store = initStore();
@@ -17,13 +18,19 @@ const store = initStore();
 class App extends React.Component {
   componentDidMount() {
     this.unsubscribeAuth = onAuthStateChanged((authUser) => {
-      store.dispatch(resetAuthState());
       store.dispatch(storeAuthUser(authUser));
+
+      if (authUser) {
+        this.unsubscribeMessages = store.dispatch(
+          subscribeToMessages(authUser.uid)
+        );
+      }
     });
   }
 
   componentWillUnmount() {
     this.unsubscribeAuth();
+    this.unsubscribeMessages();
   }
 
   render() {

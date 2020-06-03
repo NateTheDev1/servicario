@@ -1,5 +1,8 @@
 import * as api from "api";
-import { COLLABORATION_CREATED_FROM_OFFER } from "types";
+import {
+  COLLABORATION_CREATED_FROM_OFFER,
+  FETCH_USER_MESSAGES_SUCCESS,
+} from "types";
 
 export const collaborate = ({ collaboration, message }) => (dispatch) =>
   api.createCollaboration(collaboration).then((collabId) => {
@@ -13,3 +16,8 @@ export const collaborate = ({ collaboration, message }) => (dispatch) =>
     });
     return collabId;
   });
+
+export const subscribeToMessages = (userId) => (dispatch) =>
+  api.subscribeToMessages(userId, (messages) =>
+    dispatch({ type: FETCH_USER_MESSAGES_SUCCESS, payload: messages })
+  );
