@@ -1,5 +1,5 @@
 import * as api from "../api/index";
-import { FETCH_OFFERS_SUCCESS } from "../types/index";
+import { FETCH_OFFERS_SUCCESS, CHANGE_OFFER_STATUS } from "../types/index";
 
 export const createOffer = (offer) => api.createOffer(offer);
 
@@ -39,3 +39,23 @@ export const fetchReceivedOffers = (userId) => (dispatch) => {
     return offers;
   });
 };
+
+export const acceptOffer = (offerId) => (dispatch) =>
+  api.changeOfferStatus(offerId, "accepted").then((_) =>
+    dispatch({
+      type: CHANGE_OFFER_STATUS,
+      payload: offerId,
+      offersType: "received",
+      status: "accepted",
+    })
+  );
+
+export const declineOffer = (offerId) => (dispatch) =>
+  api.changeOfferStatus(offerId, "declined").then((_) =>
+    dispatch({
+      type: CHANGE_OFFER_STATUS,
+      status: "declined",
+      payload: offerId,
+      offersType: "received",
+    })
+  );

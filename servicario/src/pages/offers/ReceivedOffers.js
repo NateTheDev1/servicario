@@ -1,14 +1,28 @@
 import React from "react";
 import withAuthorization from "../../components/hoc/withAuthorization";
 import ServiceItem from "../../components/service/ServiceItem";
-import { fetchReceivedOffers } from "actions";
+import { fetchReceivedOffers, acceptOffer, declineOffer } from "actions";
 import { connect } from "react-redux";
 
 class ReceivedOffers extends React.Component {
   componentDidMount() {
     const { auth } = this.props;
-    this.props.dispatch(fetchReceivedOffers(auth.user.uid));
+    this.props.fetchReceivedOffers(auth.user.uid);
   }
+
+  acceptOffer = (offerId) => {
+    this.props.acceptOffer(offerId);
+  };
+
+  declineOffer = (offerId) => {
+    this.props.declineOffer(offerId);
+  };
+
+  statusClass = (status) => {
+    if (status === "pending") return "is-warning";
+    if (status === "accepted") return "is-success";
+    if (status === "declined") return "is-danger";
+  };
 
   render() {
     const { offers } = this.props;
@@ -24,7 +38,9 @@ class ReceivedOffers extends React.Component {
                   className="offer-card"
                   service={o.service}
                 >
-                  <div className="tag is-large">{o.status}</div>
+                  <div className={`tag is-large ${this.statusClass(o.status)}`}>
+                    {o.status}
+                  </div>
                   <hr />
                   <div className="service-offer">
                     <div>
@@ -41,6 +57,23 @@ class ReceivedOffers extends React.Component {
                       <span className="label">Time:</span> {o.time} hours
                     </div>
                   </div>
+                  {o.status === "pending" && (
+                    <div>
+                      <hr />
+                      <button
+                        className="button is-success s-m-r"
+                        onClick={() => this.acceptOffer(o.id)}
+                      >
+                        Accept
+                      </button>
+                      <button
+                        className="button is-danger"
+                        onClick={() => this.declineOffer(o.id)}
+                      >
+                        Deline
+                      </button>
+                    </div>
+                  )}
                 </ServiceItem>
               </div>
             ))}
@@ -53,4 +86,10 @@ class ReceivedOffers extends React.Component {
 
 const mapStateToProps = (state) => ({ offers: state.offers.received });
 
-export default withAuthorization(connect(mapStateToProps)(ReceivedOffers));
+const mapDispatchToProps = () => {
+  return { acceptOffer, declineOffer, fetchReceivedOffers };
+};
+
+export default withAuthorization(
+  connect(mapStateToProps, mapDispatchToProps())(ReceivedOffers)
+);
